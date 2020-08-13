@@ -11,10 +11,11 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
+    "lodash": "^4.17.20",
     "react": "16.13.1",
     "react-native": "0.63.1",
-    "react-native-globals": "^0.62.0",
     "react-native-gesture-handler": "^1.6.1",
+    "react-native-globals": "^0.62.0",
     "react-native-reanimated": "2.0.0-alpha.5",
     "react-native-svg": "^12.1.0"
   },

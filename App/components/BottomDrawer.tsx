@@ -13,7 +13,7 @@ import { PanGestureHandler } from 'react-native-gesture-handler';
 import CustomModal from './Modal';
 import { drawerSlideInConfig, drawerSlideOutConfig } from './util/reanimations';
 import { Dimensions, StyleSheet } from 'react-native';
-import {clamp} from "./util/clamp";
+import { clamp } from './util/clamp';
 
 export const closest = (value, values) => {
   'worklet';
@@ -69,6 +69,7 @@ const BottomDrawer: FunctionComponent<ModalType> = ({
 
   const onGestureEvent = useAnimatedGestureHandler({
     onStart: (_, ctx) => {
+      console.log('Hey');
       ctx.offsetY = translateY.value;
     },
     onActive: (event, ctx) => {

@@ -8,6 +8,7 @@ import SegmentedControl from '../components/SegmentedControl';
 import { Styles } from '../styles/styles';
 import Button from '../components/molecules/Button';
 import { View, Text, Dimensions } from 'react-native';
+import VerticalSlider from '../components/VerticalSlider';
 const DeviceHeight = Dimensions.get('screen').height;
 const items = [
   { label: 'First', value: 1 },
@@ -15,6 +16,37 @@ const items = [
   { label: 'Third', value: 3 },
 ];
 setup(() => {
+  getStory('Slider').add('all', () => {
+    return (
+      <View
+        style={[{ flex: 1, backgroundColor: '#333' }, Styles.centeredContainer]}
+      >
+        <WithSetValue defaultValue={50}>
+          {({ value, setValue }) => (
+            <>
+              <View style={{ height: 200, width: 80 }}>
+                <VerticalSlider
+                  min={0}
+                  max={100}
+                  onChange={setValue}
+                  value={value}
+                  innerStyle={{
+                    backgroundColor: 'white',
+                    width: 80,
+                  }}
+                  maskStyle={{ height: 200, width: 80, borderRadius: 16 }}
+                  containerStyle={{
+                    backgroundColor: 'black',
+                  }}
+                />
+              </View>
+              <Text>{value}</Text>
+            </>
+          )}
+        </WithSetValue>
+      </View>
+    );
+  });
   getStory('SegmentedControl').add('all', () => {
     return (
       <View style={{ backgroundColor: 'white', flex: 1, padding: 20 }}>
@@ -45,7 +77,6 @@ setup(() => {
             )}
           </WithSetValue>
         </View>
-
         <SegmentedControl disabled items={items} value={items[1]} />
       </View>
     );
@@ -103,7 +134,10 @@ setup(() => {
               visible={value}
             >
               <View
-                style={[{ width: 200, height: 100, backgroundColor: 'white' }, Styles.centeredContainer]}
+                style={[
+                  { width: 200, height: 100, backgroundColor: 'white' },
+                  Styles.centeredContainer,
+                ]}
               >
                 <Text>Modal content</Text>
               </View>
