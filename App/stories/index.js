@@ -4,11 +4,52 @@ import StorybookUIRoot, { getStory, setup } from './setup';
 import WithSetValue from '../components/util/WithSetValue';
 import BottomDrawer from '../components/BottomDrawer';
 import Modal from '../components/Modal';
+import SegmentedControl from '../components/SegmentedControl';
 import { Styles } from '../styles/styles';
 import Button from '../components/molecules/Button';
 import { View, Text, Dimensions } from 'react-native';
 const DeviceHeight = Dimensions.get('screen').height;
+const items = [
+  { label: 'First', value: 1 },
+  { label: 'Second', value: 2 },
+  { label: 'Third', value: 3 },
+];
 setup(() => {
+  getStory('SegmentedControl').add('all', () => {
+    return (
+      <View style={{ backgroundColor: 'white', flex: 1, padding: 20 }}>
+        <WithSetValue defaultValue={items[1]}>
+          {({ value, setValue }) => (
+            <SegmentedControl onChange={setValue} value={value} items={items} />
+          )}
+        </WithSetValue>
+        <View style={{ marginTop: 10, marginBottom: 20 }}>
+          <WithSetValue defaultValue={items[2]}>
+            {({ value, setValue }) => (
+              <SegmentedControl
+                paddingX={20}
+                trackStyle={{
+                  paddingHorizontal: 20,
+                  backgroundColor: '#222',
+                  height: 64,
+                  paddingVertical: 10,
+                }}
+                textStyle={{ color: '#ccc' }}
+                textPressedStyle={{ color: 'white' }}
+                textActiveStyle={{ color: 'white' }}
+                barStyle={{ backgroundColor: '#333' }}
+                onChange={setValue}
+                value={value}
+                items={items}
+              />
+            )}
+          </WithSetValue>
+        </View>
+
+        <SegmentedControl disabled items={items} value={items[1]} />
+      </View>
+    );
+  });
   getStory('Bottom Drawer')
     .add('default', () => (
       <WithSetValue defaultValue={false}>
@@ -62,7 +103,7 @@ setup(() => {
               visible={value}
             >
               <View
-                style={{ width: 200, height: 100, backgroundColor: 'white' }}
+                style={[{ width: 200, height: 100, backgroundColor: 'white' }, Styles.centeredContainer]}
               >
                 <Text>Modal content</Text>
               </View>

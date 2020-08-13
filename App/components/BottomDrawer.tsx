@@ -11,17 +11,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import CustomModal from './Modal';
-import { drawerSlideInConfig, drawerSlideOutConfig } from '../reanimations';
+import { drawerSlideInConfig, drawerSlideOutConfig } from './util/reanimations';
 import { Dimensions, StyleSheet } from 'react-native';
-
-export const clamp = (
-  value: number,
-  lowerBound: number,
-  upperBound: number
-) => {
-  'worklet';
-  return Math.min(Math.max(lowerBound, value), upperBound);
-};
+import {clamp} from "./util/clamp";
 
 export const closest = (value, values) => {
   'worklet';
@@ -104,6 +96,7 @@ const BottomDrawer: FunctionComponent<ModalType> = ({
 
   return (
     <CustomModal
+      controlled
       fadeContent={false}
       onDismissPress={onDismissPress}
       preventDismiss={preventDismiss}

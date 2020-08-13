@@ -6,12 +6,13 @@ import Animated, {
 } from 'react-native-reanimated'; // we need this to make JSX compile
 import { Modal, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
-import { modalConfig } from '../reanimations';
+import { modalConfig } from './util/reanimations';
 
 type ComponentType = {};
 export type ModalType = {
   animatedValue?: Animated.SharedValue<number>;
   fadeContent?: boolean;
+  controlled?: boolean;
   visible: boolean;
   style: ReactNative.ViewStyle;
   onDismissPress?: () => void;
@@ -57,19 +58,20 @@ const CustomModal: FunctionComponent<ModalType> = ({
   preventDismiss,
   style,
   visible,
+  controlled,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const animationValue = _animatedValue || useSharedValue(0);
 
   useEffect(() => {
-    if (!_animatedValue) {
+    if (!controlled) {
       visible && setModalVisible(true);
       animationValue.value = withTiming(visible ? 1 : 0, modalConfig, () => {
         !visible && setModalVisible(false);
       });
     }
-  }, [visible, _animatedValue, animationValue]);
+  }, [visible, controlled, _animatedValue, animationValue]);
 
   const opacityStyle = useAnimatedStyle(() => ({
     opacity: animationValue.value,

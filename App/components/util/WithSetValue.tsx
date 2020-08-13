@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useCallback } from 'react'; // we need this to make JSX compile
+import { FunctionComponent, useState } from 'react'; // we need this to make JSX compile
 type RenderProps = {
   value: any;
   setValue: (any) => void;
@@ -14,13 +14,10 @@ const WithSetValue: FunctionComponent<ComponentType> = ({
   children,
 }) => {
   const [value, setValue] = useState<any>(defaultValue);
-  const render = useCallback(() => {
-    return children({
-      value,
-      setValue,
-    });
-  }, [children, value, setValue]);
-  return render();
+  return children({
+    value,
+    setValue,
+  });
 };
 
 export default WithSetValue;

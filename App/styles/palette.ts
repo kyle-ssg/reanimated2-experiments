@@ -7,4 +7,7 @@ export const palette = {
   divider: 'rgb(229,229,234)',
   textLight: 'rgb(174,174,178)',
   iconFaint: 'rgb(229,229,234)',
+  controlGrey: '#F2F5F9',
+  text: '#333',
+  textHighlight: '#000',
 };

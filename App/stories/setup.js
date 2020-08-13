@@ -20,13 +20,13 @@ export const withSafeArea = (story) => (
 );
 
 export const withPaddedContainer = (story) => (
-  <Flex style={Styles.p5}>{story()}</Flex>
+  <View style={Styles.p5}>{story()}</View>
 );
 
 export const withScrollView = (story) => (
-  <Flex style={[Styles.pt10]}>
+  <View style={Styles.pt10}>
     <ScrollView style={{ overflow: 'visible' }}>{story()}</ScrollView>
-  </Flex>
+  </View>
 );
 
 export const getStory = (name) =>
