@@ -11,6 +11,7 @@ import { View, Text, Dimensions } from 'react-native';
 import VerticalSlider from '../components/VerticalSlider';
 import AnimationTester from '../components/molecules/AnimationTester';
 import Slider from '../components/Slider';
+import Swiper from '../components/Swiper';
 const DeviceHeight = Dimensions.get('screen').height;
 const items = [
   { label: 'First', value: 1 },
@@ -26,7 +27,7 @@ setup(() => {
         <WithSetValue defaultValue={90}>
           {({ value, setValue, animatedValue }) => (
             <>
-              <View style={{ height: 80, width: 200 }}>
+              <View style={{ height: 60, width: 200 }}>
                 <Slider
                   min={0}
                   animatedValue={animatedValue}
@@ -38,7 +39,7 @@ setup(() => {
                     backgroundColor: 'white',
                     width: 200,
                   }}
-                  maskStyle={{ height: 80, width: 200, borderRadius: 16 }}
+                  maskStyle={{ height: 60, width: 200, borderRadius: 16 }}
                   containerStyle={{
                     backgroundColor: 'black',
                   }}
@@ -52,6 +53,17 @@ setup(() => {
       </View>
     );
   });
+  getStory('Swiper').add('all', () => {
+    return (
+      <Swiper
+        slideStyle={{ backgroundColor: 'red' }}
+        style={{ height: 200, width: 200, backgroundColor: '#333' }}
+      >
+        <Text>1</Text>
+        <Text>2</Text>
+      </Swiper>
+    );
+  });
   getStory('Vertical Slider').add('all', () => {
     return (
       <View
@@ -60,7 +72,7 @@ setup(() => {
         <WithSetValue defaultValue={90}>
           {({ value, setValue, animatedValue }) => (
             <>
-              <View style={{ height: 200, width: 80 }}>
+              <View style={{ height: 200, width: 60 }}>
                 <VerticalSlider
                   min={0}
                   animatedValue={animatedValue}
@@ -70,9 +82,9 @@ setup(() => {
                   value={value}
                   innerStyle={{
                     backgroundColor: 'white',
-                    width: 80,
+                    width: 60,
                   }}
-                  maskStyle={{ height: 200, width: 80, borderRadius: 16 }}
+                  maskStyle={{ height: 200, width: 60, borderRadius: 16 }}
                   containerStyle={{
                     backgroundColor: 'black',
                   }}

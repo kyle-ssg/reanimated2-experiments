@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useRef } from 'react'; // we need this to make JSX compile
+import { FunctionComponent, useEffect, useRef } from 'react'; // we need this to make JSY compile
 import { StyleSheet, ViewStyle } from 'react-native';
 import { View } from 'react-native';
 import {
@@ -27,12 +27,12 @@ type ComponentType = {
   step?: number;
 };
 
-function updateValue(animatedHeight, animatedValue, value, min, max, width) {
+function updateValue(animatedWidth, animatedValue, value, min, max, width) {
   'worklet';
   if (animatedValue) {
-    animatedValue.value = value;
+    animatedValue.value = interpolate(value, [min, max], [0, 1]);
   }
-  animatedHeight.value = width - ((value - min) / max) * width;
+  animatedWidth.value = width - ((value - min) / max) * width;
 }
 
 const Slider: FunctionComponent<ComponentType> = ({
@@ -51,22 +51,32 @@ const Slider: FunctionComponent<ComponentType> = ({
   const $min = useSharedValue(min);
   const $step = useSharedValue(step);
   const $max = useSharedValue(max);
+  const animatedWidth = useSharedValue(Number.MAX_SAFE_INTEGER);
+
   const [size, onLayout] = useMeasure((initialSize) => {
     $size.value = initialSize.width;
+    animatedWidth.value = interpolate(
+      value,
+      [$min.value, $max.value],
+      [initialSize.width, 0]
+    );
+    animatedValue.value = interpolate(value, [$min.value, $max.value], [0, 1]);
   });
-  const animatedWidth = useSharedValue(0);
+
   useEffect(() => {
-    if (!$gesture.value) {
-      runOnUI(updateValue)(
-        animatedWidth,
-        animatedValue,
-        value,
-        min,
-        max,
-        size.width
-      );
+    if (size.width) {
+      if (!$gesture.value) {
+        runOnUI(updateValue)(
+          animatedWidth,
+          animatedValue,
+          value,
+          min,
+          max,
+          size.width
+        );
+      }
     }
-  }, [value, animatedValue, $gesture.value, animatedWidth, min, max, size]);
+  }, [animatedWidth, $gesture.value, animatedValue, value, min, max, size]);
 
   const throttledOnChange = useRef(throttle(onChange, 20));
 
@@ -93,7 +103,7 @@ const Slider: FunctionComponent<ComponentType> = ({
         animatedValue.value = interpolate(
           value,
           [$min.value, $max.value],
-          [1, 0]
+          [0, 1]
         );
       }
       throttledOnChange.current(rounded);

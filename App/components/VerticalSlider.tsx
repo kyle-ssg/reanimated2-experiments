@@ -1,4 +1,4 @@
-import { FunctionComponent, useEffect, useRef } from 'react'; // we need this to make JSX compile
+import { FunctionComponent, useEffect, useRef } from 'react'; // we need this to make JSY compile
 import { StyleSheet, ViewStyle } from 'react-native';
 import { View } from 'react-native';
 import {
@@ -27,15 +27,15 @@ type ComponentType = {
   step?: number;
 };
 
-function updateValue(animatedHeight, animatedValue, value, min, max, height) {
+function updateValue(animatedWidth, animatedValue, value, min, max, width) {
   'worklet';
   if (animatedValue) {
-    animatedValue.value = value;
+    animatedValue.value = interpolate(value, [min, max], [0, 1]);
   }
-  animatedHeight.value = height - ((value - min) / max) * height;
+  animatedWidth.value = width - ((value - min) / max) * width;
 }
 
-const VerticalSlider: FunctionComponent<ComponentType> = ({
+const Slider: FunctionComponent<ComponentType> = ({
   containerStyle,
   innerStyle,
   maskStyle,
@@ -51,22 +51,32 @@ const VerticalSlider: FunctionComponent<ComponentType> = ({
   const $min = useSharedValue(min);
   const $step = useSharedValue(step);
   const $max = useSharedValue(max);
+  const animatedHeight = useSharedValue(Number.MAX_SAFE_INTEGER);
+
   const [size, onLayout] = useMeasure((initialSize) => {
-    $size.value = initialSize.height;
+    $size.value = initialSize.width;
+    animatedHeight.value = interpolate(
+      value,
+      [$min.value, $max.value],
+      [initialSize.height, 0]
+    );
+    animatedValue.value = interpolate(value, [$min.value, $max.value], [0, 1]);
   });
-  const animatedHeight = useSharedValue(0);
+
   useEffect(() => {
-    if (!$gesture.value) {
-      runOnUI(updateValue)(
-        animatedHeight,
-        animatedValue,
-        value,
-        min,
-        max,
-        size.height
-      );
+    if (size.height) {
+      if (!$gesture.value) {
+        runOnUI(updateValue)(
+          animatedHeight,
+          animatedValue,
+          value,
+          min,
+          max,
+          size.height
+        );
+      }
     }
-  }, [value, animatedValue, $gesture.value, animatedHeight, min, max, size]);
+  }, [animatedHeight, $gesture.value, animatedValue, value, min, max, size]);
 
   const throttledOnChange = useRef(throttle(onChange, 20));
 
@@ -140,4 +150,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VerticalSlider;
+export default Slider;
