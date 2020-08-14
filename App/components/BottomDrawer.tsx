@@ -69,7 +69,6 @@ const BottomDrawer: FunctionComponent<ModalType> = ({
 
   const onGestureEvent = useAnimatedGestureHandler({
     onStart: (_, ctx) => {
-      console.log('Hey');
       ctx.offsetY = translateY.value;
     },
     onActive: (event, ctx) => {

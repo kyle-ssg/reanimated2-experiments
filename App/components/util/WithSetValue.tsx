@@ -1,7 +1,9 @@
-import { FunctionComponent, useState } from 'react'; // we need this to make JSX compile
+import { FunctionComponent, useState } from 'react';
+import Animated, { useSharedValue } from 'react-native-reanimated'; // we need this to make JSX compile
 type RenderProps = {
   value: any;
   setValue: (any) => void;
+  animatedValue: Animated.SharedValue<number>;
 };
 
 type ComponentType = {
@@ -14,9 +16,12 @@ const WithSetValue: FunctionComponent<ComponentType> = ({
   children,
 }) => {
   const [value, setValue] = useState<any>(defaultValue);
+  const animatedValue = useSharedValue(1);
+
   return children({
     value,
     setValue,
+    animatedValue,
   });
 };
 

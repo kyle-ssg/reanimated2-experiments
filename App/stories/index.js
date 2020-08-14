@@ -9,6 +9,7 @@ import { Styles } from '../styles/styles';
 import Button from '../components/molecules/Button';
 import { View, Text, Dimensions } from 'react-native';
 import VerticalSlider from '../components/VerticalSlider';
+import AnimationTester from '../components/molecules/AnimationTester';
 const DeviceHeight = Dimensions.get('screen').height;
 const items = [
   { label: 'First', value: 1 },
@@ -21,14 +22,16 @@ setup(() => {
       <View
         style={[{ flex: 1, backgroundColor: '#333' }, Styles.centeredContainer]}
       >
-        <WithSetValue defaultValue={50}>
-          {({ value, setValue }) => (
+        <WithSetValue defaultValue={90}>
+          {({ value, setValue, animatedValue }) => (
             <>
               <View style={{ height: 200, width: 80 }}>
                 <VerticalSlider
                   min={0}
+                  animatedValue={animatedValue}
                   max={100}
                   onChange={setValue}
+                  step={10}
                   value={value}
                   innerStyle={{
                     backgroundColor: 'white',
@@ -40,6 +43,7 @@ setup(() => {
                   }}
                 />
               </View>
+              <AnimationTester animatedValue={animatedValue} />
               <Text>{value}</Text>
             </>
           )}
