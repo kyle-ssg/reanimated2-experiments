@@ -19,6 +19,35 @@ const items = [
   { label: 'Third', value: 3 },
 ];
 setup(() => {
+  getStory('Swiper').add('all', () => {
+    return (
+      <WithSetValue defaultValue={1}>
+        {({ value, setValue, animatedValue }) => (
+          <>
+            <Swiper
+              index={value}
+              animatedValue={animatedValue}
+              onChange={setValue}
+              slideStyle={{
+                backgroundColor: 'red',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              style={{ height: 200, width: 200, backgroundColor: '#333' }}
+            >
+              <View>
+                <Text>0</Text>
+                <Button onPress={() => setValue(2)}>Next</Button>
+              </View>
+              <Text>1</Text>
+              <Text>2</Text>
+            </Swiper>
+            <AnimationTester animatedValue={animatedValue} />
+          </>
+        )}
+      </WithSetValue>
+    );
+  });
   getStory('Slider').add('all', () => {
     return (
       <View
@@ -51,17 +80,6 @@ setup(() => {
           )}
         </WithSetValue>
       </View>
-    );
-  });
-  getStory('Swiper').add('all', () => {
-    return (
-      <Swiper
-        slideStyle={{ backgroundColor: 'red' }}
-        style={{ height: 200, width: 200, backgroundColor: '#333' }}
-      >
-        <Text>1</Text>
-        <Text>2</Text>
-      </Swiper>
     );
   });
   getStory('Vertical Slider').add('all', () => {

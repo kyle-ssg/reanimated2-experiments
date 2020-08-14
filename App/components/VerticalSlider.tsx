@@ -13,6 +13,7 @@ import MaskedView from '@react-native-community/masked-view';
 import Animated from 'react-native-reanimated';
 import { clamp } from './util/clamp';
 import { useMeasure } from './util/useMeasure';
+import { toNearest } from './util/toNearest';
 const throttle = require('lodash/throttle');
 type ComponentType = {
   vertical?: boolean;
@@ -27,12 +28,12 @@ type ComponentType = {
   step?: number;
 };
 
-function updateValue(animatedWidth, animatedValue, value, min, max, width) {
+function updateValue(animatedWidth, animatedValue, value, min, max, height) {
   'worklet';
   if (animatedValue) {
     animatedValue.value = interpolate(value, [min, max], [0, 1]);
   }
-  animatedWidth.value = width - ((value - min) / max) * width;
+  animatedWidth.value = height - ((value - min) / max) * height;
 }
 
 const Slider: FunctionComponent<ComponentType> = ({
@@ -54,7 +55,7 @@ const Slider: FunctionComponent<ComponentType> = ({
   const animatedHeight = useSharedValue(Number.MAX_SAFE_INTEGER);
 
   const [size, onLayout] = useMeasure((initialSize) => {
-    $size.value = initialSize.width;
+    $size.value = initialSize.height;
     animatedHeight.value = interpolate(
       value,
       [$min.value, $max.value],
@@ -98,7 +99,7 @@ const Slider: FunctionComponent<ComponentType> = ({
         [0, $size.value],
         [$max.value, $min.value]
       );
-      const rounded = Math.round(value * (1 / $step.value)) / (1 / $step.value);
+      const rounded = toNearest(value, $step.value);
       if (animatedValue) {
         animatedValue.value = interpolate(
           value,
