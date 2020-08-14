@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'; // we need this to make JSX compile
+import { FunctionComponent } from 'react'; // we need this to make JSX compile
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -6,6 +6,7 @@ import Animated, {
 type ComponentType = {
   animatedValue: Animated.SharedValue<number>;
 };
+import { StyleSheet } from 'react-native';
 
 const AnimationTester: FunctionComponent<ComponentType> = ({
   animatedValue,
@@ -22,13 +23,13 @@ const AnimationTester: FunctionComponent<ComponentType> = ({
   return <Animated.View style={[styles.box, style]} />;
 };
 
-const styles = ReactNative.StyleSheet.create({
+const styles = StyleSheet.create({
   box: {
-    width: 10,
-    height: 10,
+    width: 50,
+    height: 50,
     position: 'absolute',
     right: 50,
-    top: 50,
+    bottom: 50,
     backgroundColor: 'green',
   },
 });

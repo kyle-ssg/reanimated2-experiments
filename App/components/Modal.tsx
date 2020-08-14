@@ -11,6 +11,7 @@ import { modalConfig } from './util/reanimations';
 type ComponentType = {};
 export type ModalType = {
   animatedValue?: Animated.SharedValue<number>;
+  controlledValue?: Animated.SharedValue<number>;
   fadeContent?: boolean;
   controlled?: boolean;
   visible: boolean;
@@ -52,6 +53,7 @@ const ModalInner = gestureHandlerRootHOC(function GestureExample({
 });
 const CustomModal: FunctionComponent<ModalType> = ({
   animatedValue: _animatedValue,
+  controlledValue,
   children,
   fadeContent = true,
   onDismissPress,
@@ -62,7 +64,7 @@ const CustomModal: FunctionComponent<ModalType> = ({
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const animationValue = _animatedValue || useSharedValue(0);
+  const animationValue = controlledValue || useSharedValue(0);
 
   useEffect(() => {
     if (!controlled) {
@@ -70,8 +72,11 @@ const CustomModal: FunctionComponent<ModalType> = ({
       animationValue.value = withTiming(visible ? 1 : 0, modalConfig, () => {
         !visible && setModalVisible(false);
       });
+      if (_animatedValue) {
+        _animatedValue.value = withTiming(visible ? 1 : 0, modalConfig);
+      }
     }
-  }, [visible, controlled, _animatedValue, animationValue]);
+  }, [visible, _animatedValue, controlled, controlledValue, animationValue]);
 
   const opacityStyle = useAnimatedStyle(() => ({
     opacity: animationValue.value,
@@ -82,7 +87,7 @@ const CustomModal: FunctionComponent<ModalType> = ({
 
   return (
     <Modal
-      visible={_animatedValue ? visible : modalVisible}
+      visible={controlledValue ? visible : modalVisible}
       transparent={true}
       statusBarTranslucent={true}
     >

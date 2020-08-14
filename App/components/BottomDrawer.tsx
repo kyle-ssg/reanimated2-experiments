@@ -23,7 +23,7 @@ export const closest = (value, values) => {
 };
 
 export type ModalType = {
-  animatedValue?: Animated.Value<number>;
+  animatedValue?: Animated.SharedValue<number>;
   visible: boolean;
   preventDismiss: boolean;
   height: number;
@@ -47,12 +47,19 @@ const BottomDrawer: FunctionComponent<ModalType> = ({
     if (visible) {
       visible && setModalVisible(true);
       translateY.value = withTiming(snapPoints[0], drawerSlideInConfig);
+      if (_animatedValue) {
+        _animatedValue.value = withTiming(1, drawerSlideInConfig);
+      }
+      translateY.value = withTiming(snapPoints[0], drawerSlideInConfig);
     } else if (modalVisible) {
+      if (_animatedValue) {
+        _animatedValue.value = withTiming(0, drawerSlideOutConfig);
+      }
       translateY.value = withTiming(snapPoints[1], drawerSlideOutConfig, () => {
         setModalVisible(false);
       });
     }
-  }, [visible, modalVisible, snapPoints, translateY]);
+  }, [visible, _animatedValue, modalVisible, snapPoints, translateY]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }],
@@ -73,13 +80,23 @@ const BottomDrawer: FunctionComponent<ModalType> = ({
     },
     onActive: (event, ctx) => {
       translateY.value = clamp(ctx.offsetY + event.translationY, 0, height);
+      if (_animatedValue) {
+        _animatedValue.value = (height - translateY.value) / height;
+      }
     },
     onEnd: ({ velocityY }) => {
       const value = velocityY * 0.2 + translateY.value;
       const closestValue = closest(value, snapPoints);
       if (closestValue === snapPoints[0]) {
         translateY.value = withTiming(closestValue, drawerSlideInConfig);
+        if (_animatedValue) {
+          _animatedValue.value = withTiming(1, drawerSlideInConfig);
+        }
       } else {
+        if (_animatedValue) {
+          //todo : ideally this should use decay like the
+          _animatedValue.value = withTiming(0, drawerSlideInConfig);
+        }
         translateY.value = withDecay(
           {
             velocity: Math.min(1200, Math.max(700, velocityY)),
@@ -101,7 +118,7 @@ const BottomDrawer: FunctionComponent<ModalType> = ({
       onDismissPress={onDismissPress}
       preventDismiss={preventDismiss}
       style={styles.container}
-      animatedValue={animatedValue}
+      controlledValue={animatedValue}
       visible={modalVisible}
     >
       <PanGestureHandler {...{ onGestureEvent }}>

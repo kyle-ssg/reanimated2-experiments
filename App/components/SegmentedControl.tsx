@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, {
+  interpolate,
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
@@ -69,6 +70,7 @@ const SegmentedControl: FunctionComponent<SegmentControlType> = ({
   textStyle,
   textPressedStyle,
   textActiveStyle,
+  animatedValue,
   barStyle,
   trackStyle,
   paddingX = CONTAINER_PADDING_X,
@@ -84,7 +86,15 @@ const SegmentedControl: FunctionComponent<SegmentControlType> = ({
     const initialWidth =
       size && (initialSize.width - paddingX * 2) * (1 / items.length);
     const index = items.findIndex((item) => item.value === value.value);
-    sliderPosition.value = initialWidth * (index === -1 ? 0 : index);
+    const safeIndex = index === -1 ? 0 : index;
+    sliderPosition.value = initialWidth * safeIndex;
+    if (animatedValue) {
+      animatedValue.value = interpolate(
+        safeIndex,
+        [0, items.length - 1],
+        [0, 1]
+      );
+    }
     initialised.current = true;
     $containerWidth.value = initialSize.width;
     $itemsLength.value = items.length;
@@ -95,7 +105,8 @@ const SegmentedControl: FunctionComponent<SegmentControlType> = ({
   const sliderWidth = size && (size.width - paddingX * 2) * (1 / items.length);
   const index = items.findIndex((item) => item.value === value.value);
   useEffect(() => {
-    const pos = sliderWidth * (index === -1 ? 0 : index);
+    const safeIndex = index === -1 ? 0 : index;
+    const pos = sliderWidth * safeIndex;
 
     if (!sliderWidth) {
       return;
@@ -103,11 +114,17 @@ const SegmentedControl: FunctionComponent<SegmentControlType> = ({
 
     if (initialised.current) {
       sliderPosition.value = withTiming(pos, easingConfigSlide);
+      if (animatedValue) {
+        animatedValue.value = withTiming(
+          interpolate(safeIndex, [0, items.length - 1], [0, 1]),
+          easingConfigSlide
+        );
+      }
     } else {
       initialised.current = true;
       sliderPosition.value = pos;
     }
-  }, [index, initialised, sliderPosition, sliderWidth]);
+  }, [index, animatedValue, initialised, sliderPosition, sliderWidth]);
 
   const slideStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: sliderPosition.value }],
@@ -120,6 +137,7 @@ const SegmentedControl: FunctionComponent<SegmentControlType> = ({
         0,
         $itemsLength.value - 1
       );
+
       const pos =
         $sliderWidth.value * (calculatedIndex === -1 ? 0 : calculatedIndex);
       if (pos !== sliderPosition.value) {
@@ -257,4 +275,7 @@ type BaseType = {
   paddingY?: number;
 };
 type SegmentLabelType = BaseType & { item: SegmentOption };
-type SegmentControlType = BaseType & { items: SegmentOption[] };
+type SegmentControlType = BaseType & {
+  items: SegmentOption[];
+  animatedValue?: Animated.SharedValue<number>;
+};

@@ -55,8 +55,16 @@ setup(() => {
     return (
       <View style={{ backgroundColor: 'white', flex: 1, padding: 20 }}>
         <WithSetValue defaultValue={items[1]}>
-          {({ value, setValue }) => (
-            <SegmentedControl onChange={setValue} value={value} items={items} />
+          {({ value, setValue, animatedValue }) => (
+            <>
+              <SegmentedControl
+                animatedValue={animatedValue}
+                onChange={setValue}
+                value={value}
+                items={items}
+              />
+              <AnimationTester animatedValue={animatedValue} />
+            </>
           )}
         </WithSetValue>
         <View style={{ marginTop: 10, marginBottom: 20 }}>
@@ -88,9 +96,10 @@ setup(() => {
   getStory('Bottom Drawer')
     .add('default', () => (
       <WithSetValue defaultValue={false}>
-        {({ value, setValue }) => (
+        {({ value, setValue, animatedValue }) => (
           <View style={Styles.p10}>
             <BottomDrawer
+              animatedValue={animatedValue}
               height={DeviceHeight / 2}
               style={Styles.centeredContainer}
               onDismissPress={() => setValue(false)}
@@ -101,16 +110,18 @@ setup(() => {
             <Button onPress={() => setValue(true)}>
               {`Toggle Modal(${value})`}
             </Button>
+            <AnimationTester animatedValue={animatedValue} />
           </View>
         )}
       </WithSetValue>
     ))
     .add('disable manual dismissing', () => (
       <WithSetValue defaultValue={false}>
-        {({ value, setValue }) => (
+        {({ value, setValue, animatedValue }) => (
           <View style={Styles.p10}>
             <BottomDrawer
               preventDismiss
+              animatedValue={animatedValue}
               height={DeviceHeight / 2}
               style={Styles.centeredContainer}
               onDismissPress={() => setValue(false)}
@@ -122,6 +133,7 @@ setup(() => {
             <Button onPress={() => setValue(true)}>
               {`Toggle Modal(${value})`}
             </Button>
+            <AnimationTester animatedValue={animatedValue} />
           </View>
         )}
       </WithSetValue>
@@ -129,10 +141,11 @@ setup(() => {
   getStory('Modal')
     .add('default', () => (
       <WithSetValue defaultValue={false}>
-        {({ value, setValue }) => (
+        {({ value, setValue, animatedValue }) => (
           <View style={Styles.p10}>
             <Modal
               dark
+              animatedValue={animatedValue}
               style={Styles.centeredContainer}
               onDismissPress={() => setValue(false)}
               visible={value}
@@ -146,6 +159,7 @@ setup(() => {
                 <Text>Modal content</Text>
               </View>
             </Modal>
+            <AnimationTester animatedValue={animatedValue} />
             <Button onPress={() => setValue(true)}>
               {`Toggle Modal(${value})`}
             </Button>
@@ -155,9 +169,10 @@ setup(() => {
     ))
     .add('dont fade children with backdrop', () => (
       <WithSetValue defaultValue={false}>
-        {({ value, setValue }) => (
+        {({ value, setValue, animatedValue }) => (
           <View style={Styles.p10}>
             <Modal
+              animatedValue={animatedValue}
               fadeContent={false}
               dark
               style={Styles.centeredContainer}
@@ -170,6 +185,7 @@ setup(() => {
                 <Text>Modal content</Text>
               </View>
             </Modal>
+            <AnimationTester animatedValue={animatedValue} />
             <Button onPress={() => setValue(true)}>
               {`Toggle Modal(${value})`}
             </Button>

@@ -32,7 +32,7 @@ function updateValue(animatedHeight, animatedValue, value, min, max, height) {
   if (animatedValue) {
     animatedValue.value = value;
   }
-  animatedHeight.value = height- (((value - min) / max) * height);
+  animatedHeight.value = height - ((value - min) / max) * height;
 }
 
 const VerticalSlider: FunctionComponent<ComponentType> = ({

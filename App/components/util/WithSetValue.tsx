@@ -16,7 +16,7 @@ const WithSetValue: FunctionComponent<ComponentType> = ({
   children,
 }) => {
   const [value, setValue] = useState<any>(defaultValue);
-  const animatedValue = useSharedValue(1);
+  const animatedValue = useSharedValue(0);
 
   return children({
     value,
