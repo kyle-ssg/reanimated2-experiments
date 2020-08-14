@@ -121,7 +121,7 @@ const BottomDrawer: FunctionComponent<ModalType> = ({
       controlledValue={animatedValue}
       visible={modalVisible}
     >
-      <PanGestureHandler {...{ onGestureEvent }}>
+      <PanGestureHandler enabled={!preventDismiss} {...{ onGestureEvent }}>
         <Animated.View
           style={[styles.drawer, style, animatedStyle, { height }]}
         >
