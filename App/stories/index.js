@@ -10,6 +10,7 @@ import Button from '../components/molecules/Button';
 import { View, Text, Dimensions } from 'react-native';
 import VerticalSlider from '../components/VerticalSlider';
 import AnimationTester from '../components/molecules/AnimationTester';
+import Slider from '../components/Slider';
 const DeviceHeight = Dimensions.get('screen').height;
 const items = [
   { label: 'First', value: 1 },
@@ -18,6 +19,40 @@ const items = [
 ];
 setup(() => {
   getStory('Slider').add('all', () => {
+    return (
+      <View
+        style={[{ flex: 1, backgroundColor: '#333' }, Styles.centeredContainer]}
+      >
+        <WithSetValue defaultValue={90}>
+          {({ value, setValue, animatedValue }) => (
+            <>
+              <View style={{ height: 80, width: 200 }}>
+                <Slider
+                  min={0}
+                  animatedValue={animatedValue}
+                  max={100}
+                  onChange={setValue}
+                  step={10}
+                  value={value}
+                  innerStyle={{
+                    backgroundColor: 'white',
+                    width: 200,
+                  }}
+                  maskStyle={{ height: 80, width: 200, borderRadius: 16 }}
+                  containerStyle={{
+                    backgroundColor: 'black',
+                  }}
+                />
+              </View>
+              <AnimationTester animatedValue={animatedValue} />
+              <Text>{value}</Text>
+            </>
+          )}
+        </WithSetValue>
+      </View>
+    );
+  });
+  getStory('Vertical Slider').add('all', () => {
     return (
       <View
         style={[{ flex: 1, backgroundColor: '#333' }, Styles.centeredContainer]}
