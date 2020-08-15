@@ -4,15 +4,19 @@ import StorybookUIRoot, { getStory, setup } from './setup';
 import WithSetValue from '../components/util/WithSetValue';
 import BottomDrawer from '../components/BottomDrawer';
 import Modal from '../components/Modal';
+import FastImage from 'react-native-fast-image';
+
 import SegmentedControl from '../components/SegmentedControl';
 import { Styles } from '../styles/styles';
 import Button from '../components/molecules/Button';
-import { View, Text, Dimensions } from 'react-native';
+import { View, Text, Dimensions, Image, ImageBackground } from 'react-native';
 import VerticalSlider from '../components/VerticalSlider';
 import AnimationTester from '../components/molecules/AnimationTester';
 import Slider from '../components/Slider';
 import Swiper from '../components/Swiper';
 import AnimatedGradient from '../components/AnimatedGradient';
+import { AnimatedBlur, AnimatedVibrancy } from '../components/AnimatedBlur';
+import AnimatedOnOffImage from '../components/AnimatedOnOffImage';
 const DeviceHeight = Dimensions.get('screen').height;
 const items = [
   { label: 'First', value: 1 },
@@ -20,6 +24,106 @@ const items = [
   { label: 'Third', value: 3 },
 ];
 setup(() => {
+  getStory('AnimatedOnOffImage').add('all', () => {
+    return (
+      <WithSetValue defaultValue={0}>
+        {({ value, setValue, animatedValue }) => (
+          <>
+            <AnimatedOnOffImage animatedValue={animatedValue} />
+            <View
+              style={{
+                marginTop: 10,
+                height: 10,
+                alignSelf: 'center',
+                width: 200,
+              }}
+            >
+              <Slider
+                min={0}
+                max={100}
+                step={10}
+                animatedValue={animatedValue}
+                onChange={setValue}
+                value={value}
+                innerStyle={{
+                  backgroundColor: '#aaa',
+                  width: 200,
+                }}
+                maskStyle={{
+                  height: 10,
+                  width: 200,
+                  borderRadius: 16,
+                }}
+                containerStyle={{
+                  borderWidth: StyleSheet.hairlineWidth,
+                  padding: 1,
+                  borderRadius: 16,
+                  borderColor: '#eaeaea',
+                  backgroundColor: '#f1f1f1',
+                }}
+              />
+            </View>
+          </>
+        )}
+      </WithSetValue>
+    );
+  });
+  getStory('Blur').add('all', () => {
+    return (
+      <WithSetValue defaultValue={50}>
+        {({ value, setValue, animatedValue }) => (
+          <View style={StyleSheet.absoluteFillObject}>
+            <View style={{ flex: 1 }}>
+              <FastImage
+                source={{
+                  uri:
+                    'https://media.idownloadblog.com/wp-content/uploads/2020/04/iPhone-SE-2020-wallpaper-AR72014-iDownloadBlog-Silk-Purple-iPhone-DARK.png',
+                }}
+                style={{
+                  flex: 1,
+                }}
+              />
+              <AnimatedBlur animatedValue={animatedValue} />
+              <Text>Hi</Text>
+            </View>
+            <View
+              style={{
+                marginTop: 10,
+                height: 10,
+                alignSelf: 'center',
+                width: 200,
+              }}
+            >
+              <Slider
+                min={0}
+                max={100}
+                step={10}
+                animatedValue={animatedValue}
+                onChange={setValue}
+                value={value}
+                innerStyle={{
+                  backgroundColor: '#aaa',
+                  width: 200,
+                }}
+                maskStyle={{
+                  height: 10,
+                  width: 200,
+                  borderRadius: 16,
+                }}
+                containerStyle={{
+                  borderWidth: StyleSheet.hairlineWidth,
+                  padding: 1,
+                  borderRadius: 16,
+                  borderColor: '#eaeaea',
+                  backgroundColor: '#f1f1f1',
+                }}
+              />
+            </View>
+          </View>
+        )}
+      </WithSetValue>
+    );
+  });
   getStory('Swiper').add('all', () => {
     return (
       <WithSetValue defaultValue={1}>

@@ -20,7 +20,7 @@ const AnimationTester: FunctionComponent<ComponentType> = ({
   const $max = useSharedValue(max);
   const style = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(animatedValue.value, [min, max], [0, 1]),
+      opacity: interpolate(animatedValue.value, [$min.value, $max.value], [0, 1]),
       transform: [
         {
           rotate:
