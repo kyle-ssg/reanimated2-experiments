@@ -2,24 +2,37 @@ import { FunctionComponent } from 'react'; // we need this to make JSX compile
 import Animated, {
   interpolate,
   useAnimatedStyle,
+  useSharedValue,
 } from 'react-native-reanimated';
 type ComponentType = {
   animatedValue: Animated.SharedValue<number>;
+  min?: number;
+  max?: number;
 };
 import { StyleSheet } from 'react-native';
 
 const AnimationTester: FunctionComponent<ComponentType> = ({
   animatedValue,
+  min = 0,
+  max = 1,
 }) => {
-  const style = useAnimatedStyle(() => ({
-    opacity: animatedValue.value,
-    transform: [
-      {
-        rotate:
-          interpolate(animatedValue.value, [0, 0.5, 1], [0, 180, 360]) + 'deg',
-      },
-    ],
-  }));
+  const $min = useSharedValue(min);
+  const $max = useSharedValue(max);
+  const style = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(animatedValue.value, [min, max], [0, 1]),
+      transform: [
+        {
+          rotate:
+            interpolate(
+              animatedValue.value,
+              [min, (max - min) / 2, max],
+              [0, 180, 360]
+            ) + 'deg',
+        },
+      ],
+    };
+  });
   return <Animated.View style={[styles.box, style]} />;
 };
 

@@ -12,6 +12,7 @@ import VerticalSlider from '../components/VerticalSlider';
 import AnimationTester from '../components/molecules/AnimationTester';
 import Slider from '../components/Slider';
 import Swiper from '../components/Swiper';
+import AnimatedGradient from '../components/AnimatedGradient';
 const DeviceHeight = Dimensions.get('screen').height;
 const items = [
   { label: 'First', value: 1 },
@@ -24,25 +25,34 @@ setup(() => {
       <WithSetValue defaultValue={1}>
         {({ value, setValue, animatedValue }) => (
           <>
+            <AnimatedGradient
+              colors={[
+                ['#ef32d9', '#e96443'],
+                ['#89fffd', '#904e95'],
+              ]}
+              animatedValue={animatedValue}
+            />
             <Swiper
               index={value}
               animatedValue={animatedValue}
               onChange={setValue}
               slideStyle={{
-                backgroundColor: 'red',
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
-              style={{ height: 200, width: 200, backgroundColor: '#333' }}
+              style={{
+                ...StyleSheet.absoluteFillObject,
+              }}
             >
-              <View>
-                <Text>0</Text>
-                <Button onPress={() => setValue(2)}>Next</Button>
+              <View style={Styles.centeredContainer}>
+                <Button style={{ width: 100 }} onPress={() => setValue(1)}>
+                  Next
+                </Button>
               </View>
               <Text>1</Text>
               <Text>2</Text>
             </Swiper>
-            <AnimationTester animatedValue={animatedValue} />
+            <AnimationTester min={0} max={2} animatedValue={animatedValue} />
           </>
         )}
       </WithSetValue>

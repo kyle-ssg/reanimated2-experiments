@@ -19,6 +19,7 @@ import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedScrollHandler,
+  useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
 import { useMeasure } from './util/useMeasure';
@@ -27,6 +28,8 @@ import AnimationTester from './molecules/AnimationTester';
 type ComponentType = {
   style?: ViewStyle;
   slideStyle?: ViewStyle;
+  dotStyle?: ViewStyle;
+  activeDotStyle?: ViewStyle;
   scrollProps?: ScrollViewProps;
   index: number;
   children: ReactNode[];
@@ -37,6 +40,8 @@ type ComponentType = {
 const Swiper: FunctionComponent<ComponentType> = ({
   style,
   slideStyle,
+  dotStyle,
+  activeDotStyle,
   children,
   scrollProps = {},
   animatedValue,
@@ -45,6 +50,10 @@ const Swiper: FunctionComponent<ComponentType> = ({
 }) => {
   const [size, onLayout] = useMeasure();
   const $size = useSharedValue(0);
+  const $items = useSharedValue(children.length);
+  useEffect(() => {
+    $items.value = children.length;
+  }, [children]);
   const $slideProgress = useSharedValue(0);
   const [initialised, setInitialised] = useState(false);
   const scrollViewRef = useRef<ScrollView>();
@@ -76,9 +85,19 @@ const Swiper: FunctionComponent<ComponentType> = ({
     const progress = closestOffset ? closestOffset / $size.value : 0;
     $slideProgress.value = interpolate(progress, [0, 0.5, 1], [0, 1, 0]);
     if (animatedValue) {
-      animatedValue.value = clampedOffset / max;
+      animatedValue.value = clampedOffset ? clampedOffset / $size.value : 0;
     }
   });
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    width: interpolate($slideProgress.value, [0, 1], [10, 20]),
+    transform: [
+      {
+        translateX: animatedValue.value * 15,
+      },
+    ],
+  }));
+
   return (
     <View onLayout={onLayout} style={[style]}>
       <Animated.ScrollView
@@ -110,6 +129,14 @@ const Swiper: FunctionComponent<ComponentType> = ({
           </View>
         ))}
       </Animated.ScrollView>
+      {
+        <View style={styles.dotContainer}>
+          <Animated.View style={[styles.activeDot, activeDotStyle, animatedStyle]} />
+          {children.map(() => (
+            <View style={[styles.dot, dotStyle]} />
+          ))}
+        </View>
+      }
     </View>
   );
 };
@@ -119,8 +146,28 @@ const styles = StyleSheet.create({
   none: {
     display: 'none',
   },
+  dot: {
+    backgroundColor: 'rgba(255,255,255,0.5)',
+    marginRight: 5,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  activeDot: {
+    width: 10,
+    height: 10,
+    position: 'absolute',
+    backgroundColor: 'white',
+    marginRight: 5,
+    borderRadius: 5,
+  },
+  dotContainer: {
+    position: 'absolute',
+    bottom: 10,
+    flexDirection: 'row',
+    alignSelf: 'center',
+  },
   slide: {
-    backgroundColor: 'red',
     height: '100%',
   },
 });
