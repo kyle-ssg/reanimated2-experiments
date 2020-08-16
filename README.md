@@ -26,4 +26,4 @@ Long term the aim is to release this as an NPM module, however React Native Rean
 - [x] Modal - A react modal with animated backdrop
 - [ ] Drawer - A full screen left/right drawer that overlays the content
 - [ ] Image - An image with a source controlled via an animation value
-- [ ] Gradient - A gradient with animated colours
+- [ ] Gradient - A gradient with animated colours (Waiting on https://github.com/software-mansion/react-native-reanimated/issues/1053)
