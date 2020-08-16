@@ -24,6 +24,6 @@ Long term the aim is to release this as an NPM module, however React Native Rean
 - [x] SegmentedControl - iOS13 style segmented control
 - [x] BottomDrawer - Gesture enabled drawer
 - [x] Modal - A react modal with animated backdrop
-- [] Drawer - A full screen left/right drawer that overlays the content
-- [] Image - An image with a source controlled via an animation value
-- [] Gradient - A gradient with animated colours
+- [ ] Drawer - A full screen left/right drawer that overlays the content
+- [ ] Image - An image with a source controlled via an animation value
+- [ ] Gradient - A gradient with animated colours
