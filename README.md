@@ -1,23 +1,11 @@
-# reanimated-2-playground
+# React Native Reanimated 2 Experiments
 
-This repo contains a fresh React Native project with preinstalled Reanimated V2
+The aim of this repository is to create a set of animated / interactive components that conform to the following rules:
 
-Checkout using the following command to start playing with the new Reanimated API:
+- Run on the UI layout without JS blocking
+- Expose a configurable animationValue from 0 to 1 to support interpolation with your other components
+- Fully customisable stylistically
+- Interuptable, meaning that values can be set during an animation
 
-```bash
-> git clone git@github.com:software-mansion-labs/reanimated-2-playground.git
-```
 
-Don't forget to install dependencies:
-```bash
-> cd reanimated-2-playground && yarn
-```
-
-If you want to install app on the iOS simulator:
-```bash
-npx pod-install
-```
-
-Then run the app using Xcode or `react-native` CLI.
-
-[Check Reanimated 2 documentation here.](https://docs.swmansion.com/react-native-reanimated/)
+Long term the aim is to release this as an NPM module, however React Native Reanimated 2 is still new and in beta.
