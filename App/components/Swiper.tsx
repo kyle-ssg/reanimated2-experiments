@@ -89,14 +89,17 @@ const Swiper: FunctionComponent<ComponentType> = ({
     }
   });
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    width: interpolate($slideProgress.value, [0, 1], [10, 20]),
-    transform: [
-      {
-        translateX: animatedValue.value * 15,
-      },
-    ],
-  }));
+  const animatedStyle = useAnimatedStyle(() => {
+    console.log(animatedValue.value);
+    return {
+      width: interpolate($slideProgress.value, [0, 1], [10, 20]),
+      transform: [
+        {
+          translateX: animatedValue.value * 15,
+        },
+      ],
+    };
+  });
 
   return (
     <View onLayout={onLayout} style={[style]}>
@@ -131,7 +134,9 @@ const Swiper: FunctionComponent<ComponentType> = ({
       </Animated.ScrollView>
       {
         <View style={styles.dotContainer}>
-          <Animated.View style={[styles.activeDot, activeDotStyle, animatedStyle]} />
+          <Animated.View
+            style={[styles.activeDot, activeDotStyle, animatedStyle]}
+          />
           {children.map(() => (
             <View style={[styles.dot, dotStyle]} />
           ))}

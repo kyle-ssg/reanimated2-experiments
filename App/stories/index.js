@@ -24,6 +24,61 @@ const items = [
   { label: 'Third', value: 3 },
 ];
 setup(() => {
+  getStory('Blur').add('all', () => {
+    return (
+      <WithSetValue defaultValue={50}>
+        {({ value, setValue, animatedValue }) => (
+          <View style={StyleSheet.absoluteFillObject}>
+            <View style={{ flex: 1 }}>
+              <Image
+                source={{
+                  uri:
+                    'https://kecbio.com/wallpaper/galaxy-space-iphone-background.jpg',
+                }}
+                style={{
+                  flex: 1,
+                }}
+              />
+              <AnimatedBlur blurProps={{blurType:"light"}} animatedValue={animatedValue} />
+            </View>
+            <View
+              style={{
+                marginTop: 10,
+                height: 10,
+                alignSelf: 'center',
+                width: 200,
+              }}
+            >
+              <Slider
+                min={0}
+                max={100}
+                step={10}
+                animatedValue={animatedValue}
+                onChange={setValue}
+                value={value}
+                innerStyle={{
+                  backgroundColor: '#aaa',
+                  width: 200,
+                }}
+                maskStyle={{
+                  height: 10,
+                  width: 200,
+                  borderRadius: 16,
+                }}
+                containerStyle={{
+                  borderWidth: StyleSheet.hairlineWidth,
+                  padding: 1,
+                  borderRadius: 16,
+                  borderColor: '#eaeaea',
+                  backgroundColor: '#f1f1f1',
+                }}
+              />
+            </View>
+          </View>
+        )}
+      </WithSetValue>
+    );
+  });
   getStory('AnimatedOnOffImage').add('all', () => {
     return (
       <WithSetValue defaultValue={0}>
@@ -64,62 +119,6 @@ setup(() => {
               />
             </View>
           </>
-        )}
-      </WithSetValue>
-    );
-  });
-  getStory('Blur').add('all', () => {
-    return (
-      <WithSetValue defaultValue={50}>
-        {({ value, setValue, animatedValue }) => (
-          <View style={StyleSheet.absoluteFillObject}>
-            <View style={{ flex: 1 }}>
-              <FastImage
-                source={{
-                  uri:
-                    'https://media.idownloadblog.com/wp-content/uploads/2020/04/iPhone-SE-2020-wallpaper-AR72014-iDownloadBlog-Silk-Purple-iPhone-DARK.png',
-                }}
-                style={{
-                  flex: 1,
-                }}
-              />
-              <AnimatedBlur animatedValue={animatedValue} />
-              <Text>Hi</Text>
-            </View>
-            <View
-              style={{
-                marginTop: 10,
-                height: 10,
-                alignSelf: 'center',
-                width: 200,
-              }}
-            >
-              <Slider
-                min={0}
-                max={100}
-                step={10}
-                animatedValue={animatedValue}
-                onChange={setValue}
-                value={value}
-                innerStyle={{
-                  backgroundColor: '#aaa',
-                  width: 200,
-                }}
-                maskStyle={{
-                  height: 10,
-                  width: 200,
-                  borderRadius: 16,
-                }}
-                containerStyle={{
-                  borderWidth: StyleSheet.hairlineWidth,
-                  padding: 1,
-                  borderRadius: 16,
-                  borderColor: '#eaeaea',
-                  backgroundColor: '#f1f1f1',
-                }}
-              />
-            </View>
-          </View>
         )}
       </WithSetValue>
     );

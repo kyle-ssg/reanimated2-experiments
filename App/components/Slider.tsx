@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import {
   interpolate,
   runOnUI,
+  runOnJS,
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
@@ -13,7 +14,7 @@ import MaskedView from '@react-native-community/masked-view';
 import Animated from 'react-native-reanimated';
 import { clamp } from './util/clamp';
 import { useMeasure } from './util/useMeasure';
-import {toNearest} from "./util/toNearest";
+import { toNearest } from './util/toNearest';
 const throttle = require('lodash/throttle');
 type ComponentType = {
   vertical?: boolean;
@@ -26,6 +27,10 @@ type ComponentType = {
   min?: number;
   max?: number;
   step?: number;
+};
+
+const callback = () => {
+  console.log('Hi!');
 };
 
 function updateValue(animatedWidth, animatedValue, value, min, max, width) {
@@ -99,7 +104,7 @@ const Slider: FunctionComponent<ComponentType> = ({
         [0, $size.value],
         [$max.value, $min.value]
       );
-      const rounded = toNearest(value,$step.value);
+      const rounded = toNearest(value, $step.value);
       if (animatedValue) {
         animatedValue.value = interpolate(
           value,
@@ -107,7 +112,7 @@ const Slider: FunctionComponent<ComponentType> = ({
           [0, 1]
         );
       }
-      throttledOnChange.current(rounded);
+      runOnJS(throttledOnChange.current);
     },
     onEnd: () => {
       $gesture.value = false;
