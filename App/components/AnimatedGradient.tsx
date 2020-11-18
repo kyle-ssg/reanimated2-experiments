@@ -1,11 +1,13 @@
-import { FunctionComponent } from 'react'; // we need this to make JSX compile
+import { createRef, FunctionComponent, useState } from 'react'; // we need this to make JSX compile
 import LinearGradient from 'react-native-linear-gradient';
 import Animated, {
   useAnimatedProps,
   processColor,
+  useSharedValue,
   useDerivedValue,
+  runOnJS,
 } from 'react-native-reanimated';
-import ReactNative, { StyleSheet, ViewStyle } from 'react-native';
+import ReactNative, { Platform, StyleSheet, ViewStyle } from 'react-native';
 import { interpolateColor } from 'react-native-redash';
 
 type ComponentType = {
@@ -27,6 +29,7 @@ const AnimatedGradient: FunctionComponent<ComponentType> = ({
   children,
   animatedValue,
 }) => {
+  const [colors, setColors] = useState(undefined);
   const backgroundColor1 = useDerivedValue(() => {
     return processColor(
       interpolateColor(
@@ -59,8 +62,22 @@ const AnimatedGradient: FunctionComponent<ComponentType> = ({
     );
   });
 
+  const setColorAndroid = (colors) => {
+    setColors(colors);
+  };
+
   const animatedProps = useAnimatedProps(() => {
     let res;
+
+    if (Platform.OS === 'android') {
+      runOnJS(setColorAndroid)([
+        backgroundColor1.value,
+        backgroundColor2.value,
+        backgroundColor3.value,
+      ]);
+      return {};
+    }
+
     switch (outputRange[0].length) {
       case 2:
         res = {
@@ -77,10 +94,17 @@ const AnimatedGradient: FunctionComponent<ComponentType> = ({
         };
         break;
     }
-    console.log(res)
     return res;
   });
-  return (
+  return Platform.OS === 'android' ? (
+    <LinearGradient
+      {...(viewProps || {})}
+      colors={colors}
+      style={[styles.linearGradient, style]}
+    >
+      {children}
+    </LinearGradient>
+  ) : (
     <_AnimatedGradient
       animatedProps={animatedProps}
       {...(viewProps || {})}

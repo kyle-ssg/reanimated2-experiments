@@ -1,5 +1,6 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import Animated, {
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -39,7 +40,7 @@ const ModalInner = gestureHandlerRootHOC(function GestureExample({
   return (
     <View style={[style, StyleSheet.absoluteFill]}>
       <TouchableOpacity
-        onPress={onDismissPress}
+        onPress={()=>onDismissPress()}
         activeOpacity={1}
         style={[StyleSheet.absoluteFill]}
       />
@@ -70,7 +71,7 @@ const CustomModal: FunctionComponent<ModalType> = ({
     if (!controlled) {
       visible && setModalVisible(true);
       animationValue.value = withTiming(visible ? 1 : 0, modalConfig, () => {
-        !visible && setModalVisible(false);
+        !visible && runOnJS(setModalVisible)(false);
       });
       if (_animatedValue) {
         _animatedValue.value = withTiming(visible ? 1 : 0, modalConfig);

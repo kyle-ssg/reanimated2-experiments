@@ -478,14 +478,18 @@ setup(() => {
               onDismissPress={() => setValue(false)}
               visible={value}
             >
-              <View
+              <AnimatedGradient
+                animatedValue={animatedValue}
+                inputRange={[0, 1]}
+                outputRange={[
+                  ['#000', '#000'],
+                  ['#333', '#000'],
+                ]}
                 style={[
-                  { width: 200, height: 100, backgroundColor: 'white' },
+                  { flex: 1, backgroundColor: '#333' },
                   Styles.centeredContainer,
                 ]}
-              >
-                <Text>Modal content</Text>
-              </View>
+              />
             </Modal>
             <AnimationTester animatedValue={animatedValue} />
             <Button onPress={() => setValue(true)}>
