@@ -3,8 +3,8 @@ import { StyleSheet, ViewStyle } from 'react-native';
 import { View } from 'react-native';
 import {
   interpolate,
-  runOnUI,
   runOnJS,
+  runOnUI,
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
@@ -27,10 +27,6 @@ type ComponentType = {
   min?: number;
   max?: number;
   step?: number;
-};
-
-const callback = () => {
-  console.log('Hi!');
 };
 
 function updateValue(animatedWidth, animatedValue, value, min, max, width) {
@@ -112,7 +108,7 @@ const Slider: FunctionComponent<ComponentType> = ({
           [0, 1]
         );
       }
-      runOnJS(throttledOnChange.current);
+      runOnJS(throttledOnChange.current)(rounded);
     },
     onEnd: () => {
       $gesture.value = false;

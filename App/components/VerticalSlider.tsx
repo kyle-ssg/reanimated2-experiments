@@ -3,6 +3,7 @@ import { StyleSheet, ViewStyle } from 'react-native';
 import { View } from 'react-native';
 import {
   interpolate,
+  runOnJS,
   runOnUI,
   useAnimatedGestureHandler,
   useAnimatedStyle,
@@ -36,7 +37,7 @@ function updateValue(animatedWidth, animatedValue, value, min, max, height) {
   animatedWidth.value = height - ((value - min) / max) * height;
 }
 
-const Slider: FunctionComponent<ComponentType> = ({
+const VerticalSlider: FunctionComponent<ComponentType> = ({
   containerStyle,
   innerStyle,
   maskStyle,
@@ -107,7 +108,7 @@ const Slider: FunctionComponent<ComponentType> = ({
           [0, 1]
         );
       }
-      throttledOnChange.current(rounded);
+      runOnJS(throttledOnChange.current)(rounded);
     },
     onEnd: () => {
       $gesture.value = false;
@@ -151,4 +152,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Slider;
+export default VerticalSlider;

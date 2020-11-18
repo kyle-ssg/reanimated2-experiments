@@ -4,6 +4,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
+import { interpolateColor } from 'react-native-redash';
 type ComponentType = {
   animatedValue: Animated.SharedValue<number>;
   min?: number;
@@ -12,23 +13,28 @@ type ComponentType = {
 import { StyleSheet } from 'react-native';
 
 const AnimationTester: FunctionComponent<ComponentType> = ({
-  animatedValue,
-  min = 0,
-  max = 1,
-}) => {
+                                                             animatedValue,
+                                                             min = 0,
+                                                             max = 1,
+                                                           }) => {
   const $min = useSharedValue(min);
   const $max = useSharedValue(max);
   const style = useAnimatedStyle(() => {
     return {
       opacity: interpolate(animatedValue.value, [$min.value, $max.value], [0, 1]),
+      backgroundColor: interpolateColor(
+          animatedValue.value,
+          [min ,max],
+          ["#ff3884", "#38ffb3"]
+      ),
       transform: [
         {
           rotate:
-            interpolate(
-              animatedValue.value,
-              [min, (max - min) / 2, max],
-              [0, 180, 360]
-            ) + 'deg',
+              interpolate(
+                  animatedValue.value,
+                  [min, (max - min) / 2, max],
+                  [0, 180, 360]
+              ) + 'deg',
         },
       ],
     };

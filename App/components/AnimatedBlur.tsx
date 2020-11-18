@@ -67,7 +67,7 @@ export const AnimatedVibrancy: FunctionComponent<VibrancyType> = ({
 }) => {
   const animatedProps = useAnimatedProps(() => {
     return {
-      blurRadius: interpolate(animatedValue.value, [0, 1], [0, 25]),
+      blurAmount: interpolate(animatedValue.value, [0, 1], [0, 25]),
     };
   });
   return (

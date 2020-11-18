@@ -17,6 +17,7 @@ import Swiper from '../components/Swiper';
 import AnimatedGradient from '../components/AnimatedGradient';
 import { AnimatedBlur, AnimatedVibrancy } from '../components/AnimatedBlur';
 import AnimatedOnOffImage from '../components/AnimatedOnOffImage';
+import AnimatedBackground from '../components/AnimatedBackground';
 const DeviceHeight = Dimensions.get('screen').height;
 const items = [
   { label: 'First', value: 1 },
@@ -24,11 +25,157 @@ const items = [
   { label: 'Third', value: 3 },
 ];
 setup(() => {
+  getStory('Animated Gradient').add('all', () => {
+    return (
+      <View
+        style={[{ flex: 1, backgroundColor: '#333' }, Styles.centeredContainer]}
+      >
+        <WithSetValue defaultValue={90}>
+          {({ value, setValue, animatedValue }) => (
+            <AnimatedGradient
+              animatedValue={animatedValue}
+              inputRange={[0, 0.5, 1]}
+              outputRange={[
+                ['#00349d', '#20e3b2', '#29ffc6'],
+                ['#29ffc6', '#00349d', '#20e3b2'],
+                ['#20e3b2', '#29ffc6', '#00349d'],
+              ]}
+              style={[
+                { flex: 1, backgroundColor: '#333' },
+                Styles.centeredContainer,
+              ]}
+            >
+              <View style={{ height: 200, width: 60 }}>
+                <VerticalSlider
+                  min={0}
+                  animatedValue={animatedValue}
+                  max={100}
+                  onChange={setValue}
+                  step={10}
+                  value={value}
+                  innerStyle={{
+                    backgroundColor: 'white',
+                    width: 60,
+                  }}
+                  maskStyle={{ height: 200, width: 60, borderRadius: 16 }}
+                  containerStyle={{
+                    backgroundColor: 'black',
+                  }}
+                />
+              </View>
+            </AnimatedGradient>
+          )}
+        </WithSetValue>
+      </View>
+    );
+  });
+  getStory('Animated Background').add('all', () => {
+    return (
+      <View
+        style={[{ flex: 1, backgroundColor: '#333' }, Styles.centeredContainer]}
+      >
+        <WithSetValue defaultValue={90}>
+          {({ value, setValue, animatedValue }) => (
+            <AnimatedBackground
+              animatedValue={animatedValue}
+              inputRange={[0, 0.5, 1]}
+              outputRange={['#61a07a', '#fbd786', '#f7797d']}
+              style={[
+                ReactNative.StyleSheet.absoluteFillObject,
+                Styles.centeredContainer,
+              ]}
+            >
+              <View style={{ height: 200, width: 60 }}>
+                <VerticalSlider
+                  min={0}
+                  animatedValue={animatedValue}
+                  max={100}
+                  onChange={setValue}
+                  step={10}
+                  value={value}
+                  innerStyle={{
+                    backgroundColor: 'white',
+                    width: 60,
+                  }}
+                  maskStyle={{ height: 200, width: 60, borderRadius: 16 }}
+                  containerStyle={{
+                    backgroundColor: 'black',
+                  }}
+                />
+              </View>
+
+              <AnimationTester animatedValue={animatedValue} />
+              <Text>{value}</Text>
+            </AnimatedBackground>
+          )}
+        </WithSetValue>
+      </View>
+    );
+  });
+  getStory('Vibrancy').add('all', () => {
+    return (
+      <WithSetValue defaultValue={50}>
+        {({ value, setValue, animatedValue }) => (
+          <View style={StyleSheet.absoluteFill}>
+            <View style={{ flex: 1 }}>
+              <ImageBackground
+                source={{
+                  uri:
+                    'https://kecbio.com/wallpaper/galaxy-space-iphone-background.jpg',
+                }}
+                style={StyleSheet.absoluteFill}
+              >
+                <AnimatedVibrancy
+                  blurProps={{ blurType: 'light' }}
+                  animatedValue={animatedValue}
+                >
+                  <Text>Hi, I am some vibrant text.</Text>
+                </AnimatedVibrancy>
+              </ImageBackground>
+            </View>
+            <View
+              style={{
+                marginTop: 10,
+                height: 10,
+                alignSelf: 'center',
+                width: 200,
+              }}
+            >
+              <Slider
+                min={0}
+                max={100}
+                step={10}
+                animatedValue={animatedValue}
+                onChange={setValue}
+                value={value}
+                innerStyle={{
+                  backgroundColor: '#aaa',
+                  width: 200,
+                }}
+                maskStyle={{
+                  height: 10,
+                  width: 200,
+                  borderRadius: 16,
+                }}
+                containerStyle={{
+                  borderWidth: StyleSheet.hairlineWidth,
+                  padding: 1,
+                  borderRadius: 16,
+                  borderColor: '#eaeaea',
+                  backgroundColor: '#f1f1f1',
+                }}
+              />
+            </View>
+          </View>
+        )}
+      </WithSetValue>
+    );
+  });
   getStory('Blur').add('all', () => {
     return (
       <WithSetValue defaultValue={50}>
         {({ value, setValue, animatedValue }) => (
-          <View style={StyleSheet.absoluteFillObject}>
+          <View style={StyleSheet.absoluteFill}>
             <View style={{ flex: 1 }}>
               <Image
                 source={{
@@ -39,7 +186,10 @@ setup(() => {
                   flex: 1,
                 }}
               />
-              <AnimatedBlur blurProps={{blurType:"light"}} animatedValue={animatedValue} />
+              <AnimatedBlur
+                blurProps={{ blurType: 'light' }}
+                animatedValue={animatedValue}
+              />
             </View>
             <View
               style={{
@@ -144,7 +294,7 @@ setup(() => {
                 alignItems: 'center',
               }}
               style={{
-                ...StyleSheet.absoluteFillObject,
+                ...StyleSheet.absoluteFill,
               }}
             >
               <View style={Styles.centeredContainer}>
