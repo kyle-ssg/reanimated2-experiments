@@ -68,15 +68,15 @@ const AnimatedGradient: FunctionComponent<ComponentType> = ({
 
   const animatedProps = useAnimatedProps(() => {
     let res;
-
-    if (Platform.OS === 'android') {
-      runOnJS(setColorAndroid)([
-        backgroundColor1.value,
-        backgroundColor2.value,
-        backgroundColor3.value,
-      ]);
-      return {};
-    }
+    // uncomment for android fix
+    // if (Platform.OS === 'android') {
+    //   runOnJS(setColorAndroid)([
+    //     backgroundColor1.value,
+    //     backgroundColor2.value,
+    //     backgroundColor3.value,
+    //   ]);
+    //   return {};
+    // }
 
     switch (outputRange[0].length) {
       case 2:
